@@ -22,7 +22,7 @@ def scrapping_covid():
     final = []
     for row in rows:
         for item in row.find_all('td'):
-            list.append(item.text.replace("\n", "").replace(",", "."))
+            list.append(item.text.replace("\n", "").replace(",", "").strip())
         final.append(list)
         list = []
 
@@ -32,13 +32,23 @@ def scrapping_covid():
     return datos
 
 #función para eliminar las filas y columnas que no nos interesan
+#Se substituyen los "" por 0
+#Se pone en mayúsculas la variable country
 def data_clean(datos):
 
     datos = datos.drop(datos[datos["ID"] == ""].index)
     datos = datos.drop(["ID","Tot Cases 1M pop","Tests 1M pop","Continent","1 Case every X ppl", "1 Death every X ppl"
              ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
              "Active Cases/1M pop"], axis=1)
+    datos["Total Deaths"] = datos["Total Deaths"].replace("", "0").astype(int)
+    datos["Population"] = datos["Population"].replace("", "0").astype(int)
+    datos["Country"] = datos["Country"].str.upper()
     return datos
+
+#cáculo de nuevos campos para el dataframe
+def data_calculation(datos):
+    return datos.insert(loc=12, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
+
 
 #función para exportar los datos a un csv
 def export_csv(datos):
@@ -56,7 +66,11 @@ if __name__ == '__main__':
     print("Preparación de datos:\n",data_clean(datos))
     datos_covid = data_clean(datos)
 
-    #3. Exportamos los datos a un csv
+    #3. Nuevos campos calculados
+    print("Se insertan nuevos campos calculados\n")
+    data_calculation(datos_covid)
+
+    #4. Exportamos los datos a un csv
     print("Exportados los datos al csv covid.csv: ",export_csv(datos_covid))
 
 
