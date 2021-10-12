@@ -22,6 +22,8 @@ if __name__ == '__main__':
 
     print(final)
     datos = pd.DataFrame(final,columns=ListWorldPop)
+
+    datos.to_csv("poblacion.csv")
     #datos["World"] = datos["Country"]
     print(datos)
 
