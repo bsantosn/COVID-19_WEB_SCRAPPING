@@ -31,7 +31,7 @@ def scrapping_covid():
 
     return datos
 
-
+#función para exportar los datos a un csv
 def export_csv(datos):
 
     datos.to_csv("covid.csv")
@@ -39,9 +39,12 @@ def export_csv(datos):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-
+    #1. Obtenemos los datos referentes al covid-19
     print("Tabla con los datos iniciales:\n",scrapping_covid())
-    print("Exportados los datos al csv: covid.csv")
+    datos = scrapping_covid()
+
+    #2. Exportamos los datos a un csv
+    print("Exportados los datos al csv: covid.csv",export_csv(datos))
 
 
 
