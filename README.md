@@ -1,5 +1,5 @@
 # COVID-19_WEB_SCRAPPING
 
+Tareas:
 
-HOLA
-de nuevo
+Buscar web con datos homogéneos sobre las vacunaciones y datos económicos
