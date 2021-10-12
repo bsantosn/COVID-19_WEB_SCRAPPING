@@ -27,15 +27,24 @@ def scrapping_covid():
         list = []
 
     datos = pd.DataFrame(final, columns=colum)
-    datos = datos.drop(datos[datos["ID"] == ""].index)
 
+
+    return datos
+
+#función para eliminar las filas y columnas que no nos interesan
+def data_clean(datos):
+
+    datos = datos.drop(datos[datos["ID"] == ""].index)
+    datos = datos.drop(["ID","Tot Cases 1M pop","Tests 1M pop","Continent","1 Case every X ppl", "1 Death every X ppl"
+             ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
+             "Active Cases/1M pop"], axis=1)
     return datos
 
 #función para exportar los datos a un csv
 def export_csv(datos):
 
-    datos.to_csv("covid.csv")
-
+    datos.to_csv("covid.csv",index=False)
+    return "OK"
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -43,9 +52,11 @@ if __name__ == '__main__':
     print("Tabla con los datos iniciales:\n",scrapping_covid())
     datos = scrapping_covid()
 
-    #2. Exportamos los datos a un csv
-    print("Exportados los datos al csv: covid.csv",export_csv(datos))
+    #2. Preparamos los datos con las columnas y filas que nos interesan para el análisis
+    print("Preparación de datos:\n",data_clean(datos))
+    datos_covid = data_clean(datos)
+
+    #3. Exportamos los datos a un csv
+    print("Exportados los datos al csv covid.csv: ",export_csv(datos_covid))
 
 
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
