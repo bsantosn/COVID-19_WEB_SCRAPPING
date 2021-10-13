@@ -1,8 +1,18 @@
 # COVID-19_WEB_SCRAPPING
 
-Tareas:
+Integrantes:
 
-Buscar web con datos homogéneos sobre las vacunaciones y datos económicos
+Brais Santos Negreira
+Jorge Álvarez Gracia
 
-https://www.worldometers.info/world-population/population-by-country/
+Objetivos:
 
+1. Obtener información de datos referentes a los nuevos casos, muertes y otras variables relacionadas con el coronavirus.
+2. Obtener información de vacunación de los diferentes países.
+
+Información de origen:
+
+1. https://www.worldometers.info/coronavirus/
+2. https://datosmacro.expansion.com/otros/coronavirus-vacuna/
+
+Dataset final: covid_19.csv

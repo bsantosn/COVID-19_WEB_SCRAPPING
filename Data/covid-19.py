@@ -245,7 +245,7 @@ def scrapping_vaccine():
     vaccine = requests.get("https://datosmacro.expansion.com/otros/coronavirus-vacuna/")
     soup = BeautifulSoup(vaccine.text, "html.parser")
     rows = soup.find('table', attrs={'id': 'tb1'}).find('tbody').find_all('tr')
-    colum = ["Country", "Date vaccinated", "Administered doses", "Vaccinated people", "Fully vaccinated", "% Fully vaccinated","fully vaccinated_2"]
+    colum = ["Country", "Date vaccinated update", "Administered doses", "Vaccinated people", "Fully vaccinated", "% Fully vaccinated","fully vaccinated_2"]
     list = []
     final = []
     for row in rows:
