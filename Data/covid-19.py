@@ -4,7 +4,7 @@ import requests
 import csv
 import pandas as pd
 from bs4 import BeautifulSoup
-
+import matplotlib.pyplot as plt
 
 ##### TRADUCCION ESP-EN PAÍSES #####
 
@@ -224,7 +224,7 @@ def scrapping_covid():
 def data_clean(datos):
 
     datos = datos.drop(datos[datos["ID"] == ""].index)
-    datos = datos.drop(["ID","Tot Cases 1M pop","Tests 1M pop","Continent","1 Case every X ppl", "1 Death every X ppl"
+    datos = datos.drop(["ID","Tot Cases 1M pop","Tests 1M pop","1 Case every X ppl", "1 Death every X ppl"
              ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
              "Active Cases/1M pop"], axis=1)
     datos["Total Deaths"] = datos["Total Deaths"].replace("", "0").astype(int)
@@ -235,7 +235,7 @@ def data_clean(datos):
 
 #cáculo de nuevos campos para el dataframe
 def data_calculation(datos):
-    return datos.insert(loc=12, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
+    return datos.insert(loc=13, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
 
 
 #################### DATOS REFERENTES A VACUNAS DE LA COVID-19 ####################
@@ -250,7 +250,7 @@ def scrapping_vaccine():
     final = []
     for row in rows:
         for item in row.find_all('td'):
-            list.append(item.text.replace("\n", "").replace(".", "").replace(",", ".").replace(" [+]","").strip())
+            list.append(item.text.replace("\n", "").replace(".", "").replace(",", ".").replace(" [+]","").replace("%","").strip())
         final.append(list)
         list = []
 
@@ -270,6 +270,8 @@ def data_clean_vaccine(datos):
     for i in datos["Country"]:
         country.append(paises.get(i))
 
+    datos["Fully vaccinated"] = datos["Fully vaccinated"].replace("", "0").astype(int)
+    datos["% Fully vaccinated"] = round(datos["% Fully vaccinated"].replace("", "0").astype(float)/100,2)
     datos = datos.drop(["Country", "Administered doses", "Vaccinated people", "fully vaccinated_2"], axis=1)
     datos.insert(loc=0, column="Country", value=country)
 
@@ -286,6 +288,19 @@ def export_csv(datos):
 
     datos.to_csv("covid_19.csv",index=False)
     return "OK"
+
+######### VISUALIZAR DATOS #########
+def visualization(datos):
+    plt.bar(datos["Continent"], datos["Total Deaths"])
+    plt.ylabel('Total Deaths')
+    plt.xlabel('Continent')
+    plt.show()
+
+
+    plt.bar(datos["Continent"], datos["% Fully vaccinated"])
+    plt.ylabel('% Fully vaccinated')
+    plt.xlabel('Continent')
+    plt.show()
 
 
 if __name__ == '__main__':
@@ -304,4 +319,5 @@ if __name__ == '__main__':
     #4.Exportamos los datos a un csv
     print("Exportados los datos al fichero covid.csv con resultado: ",export_csv(dataset))
 
-
+    #5. Visualizar datos
+    print("Visualizar datos:\n",visualization(dataset))
