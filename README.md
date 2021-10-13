@@ -2,8 +2,8 @@
 
 Integrantes:
 
-Brais Santos Negreira
-Jorge Álvarez Gracia
+1. Brais Santos Negreira
+2. Jorge Álvarez Gracia
 
 Objetivos:
 
