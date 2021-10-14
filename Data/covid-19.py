@@ -187,7 +187,7 @@ paises = {
 
 
 #################### DATOS REFERENTES A CASOS DE LA COVID-19 ####################
-class Coromavirus:
+class Coronavirus:
 
     #constructor
     def __init__(self,url):
@@ -277,8 +277,7 @@ class Vacunas:
         for row in rows:
             for item in row.find_all('td'):
                 list.append(
-                    item.text.replace("\n", "").replace(".", "").replace(",", ".").replace(" [+]", "").replace("%",
-                                                                                                               "").strip())
+                    item.text.replace("\n", "").replace(".", "").replace(",", ".").replace(" [+]", "").replace("%","").strip())
             final.append(list)
             list = []
 
@@ -306,7 +305,7 @@ class Vacunas:
 
 
 #################### UNIMOS LOS DATOS DE LOS CASOS DE COVID-19 Y LAS VACUNAS ####################
-class InfoCovid(Coromavirus,Vacunas):
+class InfoCovid(Coronavirus,Vacunas):
 
     #constructor
     def __init__(self,covid,vaccine):
@@ -341,7 +340,7 @@ def visualization(datos):
 
 if __name__ == '__main__':
     #1. Obtenemos los datos referentes al covid-19
-    covid = Coromavirus("https://www.worldometers.info/coronavirus/")
+    covid = Coronavirus("https://www.worldometers.info/coronavirus/")
     datos_covid = covid.scrapping_covid()
     print("Tabla con los datos iniciales de casos de coronavirus:\n",datos_covid)
 
