@@ -1,5 +1,4 @@
 #imports
-
 import requests
 import csv
 import pandas as pd
@@ -7,7 +6,6 @@ from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 
 ##### TRADUCCION ESP-EN PAÍSES #####
-
 paises = {
 "ESPAÑA" : "SPAIN",
 "ALEMANIA" : "GERMANY",
@@ -189,98 +187,136 @@ paises = {
 
 
 #################### DATOS REFERENTES A CASOS DE LA COVID-19 ####################
+class Coromavirus:
 
-#función para obtener datos referentes al coronavirus
-def scrapping_covid():
-    covid = requests.get("https://www.worldometers.info/coronavirus/")
-    soup = BeautifulSoup(covid.text, "html.parser")
-    rows = soup.find('table', attrs={'id': 'main_table_countries_today'}).find('tbody').find_all('tr')
-    colum = ["ID", "Country",
-             "Total Cases", "New Cases", "Total Deaths", "New Deaths",
-             "Total Recovered", "New Recovered", "Active Cases", "Serious Critical"
-             ,"Tot Cases 1M pop", "Deaths 1M pop", "Total Tests"
-             ,"Tests 1M pop", "Population", "Continent", "1 Case every X ppl", "1 Death every X ppl"
-             ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
-             "Active Cases/1M pop"]
-    list = []
-    final = []
-    for row in rows:
-        for item in row.find_all('td'):
-            list.append(item.text.replace("\n", "").replace(",", "").strip())
-        final.append(list)
+    #constructor
+    def __init__(self,url):
+        self.url = url
+
+    #función para obtener datos referentes al coronavirus
+    def scrapping_covid(self):
+        covid = requests.get(self.url)
+        soup = BeautifulSoup(covid.text, "html.parser")
+        rows = soup.find('table', attrs={'id': 'main_table_countries_today'}).find('tbody').find_all('tr')
+        colum = ["ID", "Country",
+                 "Total Cases", "New Cases", "Total Deaths", "New Deaths",
+                 "Total Recovered", "New Recovered", "Active Cases", "Serious Critical"
+                 ,"Tot Cases 1M pop", "Deaths 1M pop", "Total Tests"
+                 ,"Tests 1M pop", "Population", "Continent", "1 Case every X ppl", "1 Death every X ppl"
+                 ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
+                 "Active Cases/1M pop"]
         list = []
+        final = []
+        for row in rows:
+            for item in row.find_all('td'):
+                list.append(item.text.replace("\n", "").replace(",", "").strip())
+            final.append(list)
+            list = []
 
-    datos = pd.DataFrame(final, columns=colum)
+        datos = pd.DataFrame(final, columns=colum)
 
-    datos_clean = data_clean(datos)
+        datos_clean = self.data_clean(datos)
 
-    data_calculation(datos_clean)
+        self.data_calculation(datos_clean)
 
-    return datos_clean
+        return datos_clean
 
-#función para eliminar las filas y columnas que no nos interesan
-#Se substituyen los "" por 0
-#Se pone en mayúsculas la variable country
-def data_clean(datos):
+    #función para eliminar las filas y columnas que no nos interesan
+    #Se sustituyen los "" por 0
+    #Se pone en mayúsculas la variable country
+    def data_clean(self,datos):
 
-    datos = datos.drop(datos[datos["ID"] == ""].index)
-    datos = datos.drop(["ID","Tot Cases 1M pop","Tests 1M pop","1 Case every X ppl", "1 Death every X ppl"
-             ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
-             "Active Cases/1M pop"], axis=1)
-    datos["Total Deaths"] = datos["Total Deaths"].replace("", "0").astype(int)
-    datos["Population"] = datos["Population"].replace("", "0").astype(int)
-    datos["Country"] = datos["Country"].str.upper()
+        datos = datos.drop(datos[datos["ID"] == ""].index)
+        datos = datos.drop(["ID","Tot Cases 1M pop","Tests 1M pop","1 Case every X ppl", "1 Death every X ppl"
+                 ,"1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
+                 "Active Cases/1M pop"], axis=1)
+        datos["Total Deaths"] = datos["Total Deaths"].replace("", "0").astype(int)
+        datos["Population"] = datos["Population"].replace("", "0").astype(int)
+        datos["Country"] = datos["Country"].str.upper()
 
-    return datos
+        return datos
 
-#cáculo de nuevos campos para el dataframe
-def data_calculation(datos):
-    return datos.insert(loc=13, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
+    #Cáculo de nuevos campos para el dataframe
+    def data_calculation(self,datos):
+        return datos.insert(loc=13, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
 
+    #Se eliminan las columnas que no necesitamos, se convierten variables a tipo entero y la variable Country se pasa a mayúsculas
+    def data_clean(self,datos):
 
-#################### DATOS REFERENTES A VACUNAS DE LA COVID-19 ####################
+        datos = datos.drop(datos[datos["ID"] == ""].index)
+        datos = datos.drop(["ID", "Tot Cases 1M pop", "Tests 1M pop", "1 Case every X ppl", "1 Death every X ppl"
+                               , "1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
+                            "Active Cases/1M pop"], axis=1)
+        datos["Total Deaths"] = datos["Total Deaths"].replace("", "0").astype(int)
+        datos["Population"] = datos["Population"].replace("", "0").astype(int)
+        datos["Country"] = datos["Country"].str.upper()
 
-#Conseguir datos de vacunación
-def scrapping_vaccine():
-    vaccine = requests.get("https://datosmacro.expansion.com/otros/coronavirus-vacuna/")
-    soup = BeautifulSoup(vaccine.text, "html.parser")
-    rows = soup.find('table', attrs={'id': 'tb1'}).find('tbody').find_all('tr')
-    colum = ["Country", "Date vaccinated update", "Administered doses", "Vaccinated people", "Fully vaccinated", "% Fully vaccinated","fully vaccinated_2"]
-    list = []
-    final = []
-    for row in rows:
-        for item in row.find_all('td'):
-            list.append(item.text.replace("\n", "").replace(".", "").replace(",", ".").replace(" [+]","").replace("%","").strip())
-        final.append(list)
+        return datos
+
+    # Cáculo de nuevos campos para el dataframe
+    def data_calculation(self,datos):
+        return datos.insert(loc=13, column="% Deaths COVID/Population",
+                            value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
+
+#################### DATOS REFERENTES DE LAS VACUNAS ####################
+class Vacunas:
+
+    #constructor
+    def __init__ (self,url):
+        self.url = url
+
+    # Conseguir datos de vacunación
+    def scrapping_vaccine(self):
+        vaccine = requests.get(self.url)
+        soup = BeautifulSoup(vaccine.text, "html.parser")
+        rows = soup.find('table', attrs={'id': 'tb1'}).find('tbody').find_all('tr')
+        colum = ["Country", "Date vaccinated update", "Administered doses", "Vaccinated people", "Fully vaccinated",
+                 "% Fully vaccinated", "fully vaccinated_2"]
         list = []
+        final = []
+        for row in rows:
+            for item in row.find_all('td'):
+                list.append(
+                    item.text.replace("\n", "").replace(".", "").replace(",", ".").replace(" [+]", "").replace("%",
+                                                                                                               "").strip())
+            final.append(list)
+            list = []
 
-    datos = pd.DataFrame(final, columns=colum)
+        datos = pd.DataFrame(final, columns=colum)
 
-    data_clean = data_clean_vaccine(datos)
+        data_clean = self.data_clean_vaccine(datos)
 
-    return data_clean
+        return data_clean
 
+    # Coger las columnas que necesitamos
+    # Pasar los paises a mayúsculas y en inglés.
+    def data_clean_vaccine(self,datos):
+        datos["Country"] = datos["Country"].str.upper()
 
-# Coger las columnas que necesitamos
-# Pasar los paises a mayúsculas y en inglés.
-def data_clean_vaccine(datos):
-    datos["Country"] = datos["Country"].str.upper()
+        country = []
+        for i in datos["Country"]:
+            country.append(paises.get(i))
 
-    country = []
-    for i in datos["Country"]:
-        country.append(paises.get(i))
+        datos["Fully vaccinated"] = datos["Fully vaccinated"].replace("", "0").astype(int)
+        datos["% Fully vaccinated"] = round(datos["% Fully vaccinated"].replace("", "0").astype(float) / 100, 2)
+        datos = datos.drop(["Country", "Administered doses", "Vaccinated people", "fully vaccinated_2"], axis=1)
+        datos.insert(loc=0, column="Country", value=country)
 
-    datos["Fully vaccinated"] = datos["Fully vaccinated"].replace("", "0").astype(int)
-    datos["% Fully vaccinated"] = round(datos["% Fully vaccinated"].replace("", "0").astype(float)/100,2)
-    datos = datos.drop(["Country", "Administered doses", "Vaccinated people", "fully vaccinated_2"], axis=1)
-    datos.insert(loc=0, column="Country", value=country)
+        return datos
 
-    return datos
 
 #################### UNIMOS LOS DATOS DE LOS CASOS DE COVID-19 Y LAS VACUNAS ####################
-def datos_finales(covid,vaccine):
-    df_inner = pd.merge(covid, vaccine, on='Country', how='inner')
-    return df_inner
+class InfoCovid(Coromavirus,Vacunas):
+
+    #constructor
+    def __init__(self,covid,vaccine):
+        self.covid = covid
+        self.vaccine = vaccine
+
+    # Se meten en un mismo dataframe la información referente al coronavirus y las vacunas
+    def datos_finales(self):
+            df_inner = pd.merge(self.covid, self.vaccine, on='Country', how='inner')
+            return df_inner
 
 
 #################### EXPORTAR DATOS A UN CSV ####################
@@ -305,19 +341,22 @@ def visualization(datos):
 
 if __name__ == '__main__':
     #1. Obtenemos los datos referentes al covid-19
-    datos_covid = scrapping_covid()
+    covid = Coromavirus("https://www.worldometers.info/coronavirus/")
+    datos_covid = covid.scrapping_covid()
     print("Tabla con los datos iniciales de casos de coronavirus:\n",datos_covid)
 
-    #2. datos referentes a la vacunación
-    datos_vaccine = scrapping_vaccine()
+    #2. Datos referentes de la vacunación
+    vacuna = Vacunas("https://datosmacro.expansion.com/otros/coronavirus-vacuna/")
+    datos_vaccine = vacuna.scrapping_vaccine()
     print("Tabla con los datos iniciales de vacunados:\n",datos_vaccine)
 
-    #3. Unión de los datos del covid-19 y vacunas
-    dataset = datos_finales(datos_covid, datos_vaccine)
-    print("Datos finales:\n",dataset)
+    # 3. Unión de los datos del covid-19 y vacunas
+    infocovid = InfoCovid(datos_covid,datos_vaccine)
+    dataset = infocovid.datos_finales ()
+    print ( "Datos finales:\n" , dataset)
 
-    #4.Exportamos los datos a un csv
-    print("Exportados los datos al fichero covid.csv con resultado: ",export_csv(dataset))
+    # 4.Exportamos los datos a un csv
+    print("Exportados los datos al fichero covid.csv con resultado:", export_csv(dataset))
 
-    #5. Visualizar datos
-    print("Visualizar datos:\n",visualization(dataset))
+    # 5. Visualizar datos
+    print("Visualizar datos:\n ", visualization(dataset))
