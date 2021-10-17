@@ -211,7 +211,7 @@ class Coronavirus:
         final = []
         for row in rows:
             for item in row.find_all('td'):
-                list.append(item.text.replace("\n", "").replace(",", "").strip())
+                list.append(item.text.replace("\n", "").replace(",", "").replace("+", "").strip())
             final.append(list)
             list = []
 
@@ -242,23 +242,7 @@ class Coronavirus:
     def data_calculation(self,datos):
         return datos.insert(loc=13, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
 
-    #Se eliminan las columnas que no necesitamos, se convierten variables a tipo entero y la variable Country se pasa a mayúsculas
-    def data_clean(self,datos):
 
-        datos = datos.drop(datos[datos["ID"] == ""].index)
-        datos = datos.drop(["ID", "Tot Cases 1M pop", "Tests 1M pop", "1 Case every X ppl", "1 Death every X ppl"
-                               , "1 Test every X ppl", "New Cases/1M pop", "New Deaths/1M pop",
-                            "Active Cases/1M pop"], axis=1)
-        datos["Total Deaths"] = datos["Total Deaths"].replace("", "0").astype(int)
-        datos["Population"] = datos["Population"].replace("", "0").astype(int)
-        datos["Country"] = datos["Country"].str.upper()
-
-        return datos
-
-    # Cáculo de nuevos campos para el dataframe
-    def data_calculation(self,datos):
-        return datos.insert(loc=13, column="% Deaths COVID/Population",
-                            value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
 
 #################### DATOS REFERENTES DE LAS VACUNAS ####################
 class Vacunas:
