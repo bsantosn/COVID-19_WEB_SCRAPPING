@@ -11,7 +11,7 @@ if __name__ == '__main__':
     datos_vaccine = vacuna.scrapping_vaccine()
     print("Tabla con los datos iniciales de vacunados:\n", datos_vaccine)
     
-    # 4. Datos referentes de la vacunación al pib
+    # 3. Datos referentes de la vacunación al pib
     gdp = Gdp("https://datosmacro.expansion.com/pib")
     datos_gdp = gdp.scrapping_gdp()
     print("Tabla con los datos iniciales del PIB:\n", datos_gdp)
