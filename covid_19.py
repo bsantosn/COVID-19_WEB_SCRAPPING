@@ -10,18 +10,19 @@ if __name__ == '__main__':
     vacuna = Vacunas("https://datosmacro.expansion.com/otros/coronavirus-vacuna/")
     datos_vaccine = vacuna.scrapping_vaccine()
     print("Tabla con los datos iniciales de vacunados:\n", datos_vaccine)
-
+    
+    # 4. Datos referentes de la vacunación al pib
     gdp = Gdp("https://datosmacro.expansion.com/pib")
     datos_gdp = gdp.scrapping_gdp()
     print("Tabla con los datos iniciales del PIB:\n", datos_gdp)
 
-    # 3. Unión de los datos del covid-19 y vacunas
+    # 4. Unión de los datos del covid-19 , vacunas y pib
     infocovid = InfoCovid(datos_covid, datos_vaccine, datos_gdp)
     dataset = infocovid.datos_finales()
     print("Datos finales:\n", dataset)
 
-    # 4.Exportamos los datos a un csv
+    # 5.Exportamos los datos a un csv
     print("Exportados los datos al fichero covid.csv con resultado:", export_csv(dataset))
 
-    # 5. Visualizar datos
+    # 6. Visualizar datos
     print("Visualizar datos:\n ", visualization(dataset))
