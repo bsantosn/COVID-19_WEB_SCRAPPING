@@ -21,4 +21,6 @@ Dataset final: covid_19.csv
 Uso del programa:
 
 $ pip install -r requirements.txt
+
+
 $ python3 covid_19.py
