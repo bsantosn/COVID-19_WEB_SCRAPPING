@@ -16,3 +16,9 @@ Información de origen:
 2. https://datosmacro.expansion.com/otros/coronavirus-vacuna/
 
 Dataset final: covid_19.csv
+
+
+Uso del programa:
+
+$ pip install -r requirements.txt
+$ python3 covid_19.py
