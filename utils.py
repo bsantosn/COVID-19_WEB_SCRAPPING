@@ -197,7 +197,9 @@ class Coronavirus:
 
     #función para obtener datos referentes al coronavirus
     def scrapping_covid(self):
-        covid = requests.get(self.url)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36"}
+        covid = requests.get(self.url, headers=headers)
         soup = BeautifulSoup(covid.text, "html.parser")
         rows = soup.find('table', attrs={'id': 'main_table_countries_today'}).find('tbody').find_all('tr')
         colum = ["ID", "Country",
@@ -269,7 +271,9 @@ class Vacunas:
 
     # Conseguir datos de vacunación
     def scrapping_vaccine(self):
-        vaccine = requests.get(self.url)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36"}
+        vaccine = requests.get(self.url, headers=headers)
         soup = BeautifulSoup(vaccine.text, "html.parser")
         rows = soup.find('table', attrs={'id': 'tb1'}).find('tbody').find_all('tr')
         colum = ["Country", "Date vaccinated update", "Administered doses", "Vaccinated people", "Fully vaccinated",
@@ -317,8 +321,8 @@ class Gdp:
     def scrapping_gdp(self):
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36"}
-        vaccine = requests.get(self.url, headers=headers)
-        soup = BeautifulSoup(vaccine.text, "html.parser")
+        gdp = requests.get(self.url, headers=headers)
+        soup = BeautifulSoup(gdp.text, "html.parser")
         rows = soup.find('table', attrs={'id': 'tbA'}).find('tbody').find_all('tr')
         colum = ["Country", "Year_GDP_update", "GDP_Annual (M)", "GDP_Var1", "GDP_Var2", "GDP_Var3", "GDP_Var4", "GDP_Var5"]
         list = []
