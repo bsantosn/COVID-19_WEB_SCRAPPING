@@ -16,8 +16,6 @@ if __name__ == '__main__':
     datos_gdp = gdp.scrapping_gdp()
     print("Tabla con los datos iniciales del PIB:\n", datos_gdp)
 
-
-
     # 4. Datos referentes de a la temperatura
     temperature = Temperature("https://en.wikipedia.org/w/index.php?title=Special:UserLogin")
     datos_temperature = temperature.scraping_temperature()

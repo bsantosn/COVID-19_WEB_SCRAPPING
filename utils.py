@@ -415,7 +415,7 @@ class Temperature:
         final = []
         for row in rows:
             for item in row.find_all('td'):
-                list.append(item.text.replace("\n", ""))
+                list.append(item.text.replace("\n", "").replace(u'\xa0',""))
             final.append(list)
             list = []
 
@@ -451,9 +451,8 @@ class InfoCovid(Coronavirus, Vacunas, Gdp, Temperature):
     # Se meten en un mismo dataframe la información referente al coronavirus y las vacunas
     def datos_finales(self):
             df_inner = pd.merge(self.covid, self.vaccine, on='Country', how='inner')
-            df_final = pd.merge(df_inner,self.gdp, on='Country', how='inner')
-            #  df_inner_2 = pd.merge(df_inner, self.gdp, on='Country', how='inner')
-            #  df_final = pd.merge(df_inner_2, self.temperature, on='Country', how='inner')
+            df_inner_2 = pd.merge(df_inner,self.gdp, on='Country', how='inner')
+            df_final = pd.merge(df_inner_2, self.temperature, on='Country', how='left')
             return df_final
 
 
