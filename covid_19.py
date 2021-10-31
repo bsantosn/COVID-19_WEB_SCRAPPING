@@ -16,13 +16,20 @@ if __name__ == '__main__':
     datos_gdp = gdp.scrapping_gdp()
     print("Tabla con los datos iniciales del PIB:\n", datos_gdp)
 
-    # 4. Unión de los datos del covid-19 , vacunas y pib
-    infocovid = InfoCovid(datos_covid, datos_vaccine, datos_gdp)
+
+
+    # 4. Datos referentes de a la temperatura
+    temperature = Temperature("https://en.wikipedia.org/w/index.php?title=Special:UserLogin")
+    datos_temperature = temperature.scraping_temperature()
+    print("Tabla con los datos iniciales de la temperatura media:\n", datos_temperature)
+
+    # 5. Unión de los datos del covid-19 , vacunas y pib
+    infocovid = InfoCovid(datos_covid, datos_vaccine, datos_gdp, datos_temperature)
     dataset = infocovid.datos_finales()
     print("Datos finales:\n", dataset)
 
-    # 5.Exportamos los datos a un csv
+    # 6.Exportamos los datos a un csv
     print("Exportados los datos al fichero covid.csv con resultado:", export_csv(dataset))
 
-    # 6. Visualizar datos
+    # 7. Visualizar datos
     print("Visualizar datos:\n ", visualization(dataset))
