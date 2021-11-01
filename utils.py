@@ -1,6 +1,5 @@
 # imports
 import errno
-
 import requests
 import os
 import pandas as pd
@@ -15,6 +14,7 @@ import time
 
 
 ##### TRADUCCION ESP-EN PAÍSES #####
+
 paises = {
 "ESPAÑA" : "SPAIN",
 "ALEMANIA" : "GERMANY",
@@ -196,13 +196,14 @@ paises = {
 
 
 #################### DATOS REFERENTES A CASOS DE LA COVID-19 ####################
+
 class Coronavirus:
 
-    #constructor
+    # Constructor
     def __init__(self,url):
         self.url = url
 
-    #función para obtener datos referentes al coronavirus
+    # función para obtener datos referentes al coronavirus
     def scrapping_covid(self):
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36"}
@@ -232,9 +233,9 @@ class Coronavirus:
 
         return datos_clean
 
-    #función para eliminar las filas y columnas que no nos interesan
-    #Se sustituyen los "" por 0
-    #Se pone en mayúsculas la variable country
+    # función para eliminar las filas y columnas que no nos interesan
+    # Se sustituyen los "" por 0
+    # Se pone en mayúsculas la variable country
     def data_clean(self,datos):
 
         datos = datos.drop(datos[datos["ID"] == ""].index)
@@ -247,11 +248,12 @@ class Coronavirus:
 
         return datos
 
-    #Cáculo de nuevos campos para el dataframe
+    # Cáculo de nuevos campos para el dataframe
     def data_calculation(self,datos):
         return datos.insert(loc=13, column="% Deaths COVID/Population",value=round((datos["Total Deaths"] / datos["Population"]) * 100, 2))
 
-    #Se eliminan las columnas que no necesitamos, se convierten variables a tipo entero y la variable Country se pasa a mayúsculas
+    # Se eliminan las columnas que no necesitamos, se convierten variables a tipo entero y la variable Country se pasa a mayúsculas
+
     def data_clean(self,datos):
 
         datos = datos.drop(datos[datos["ID"] == ""].index)
@@ -301,7 +303,7 @@ class Vacunas:
         return data_clean
 
     # Coger las columnas que necesitamos
-    # Pasar los paises a mayúsculas y en inglés.
+    # Pasar los países a mayúsculas y en inglés.
     def data_clean_vaccine(self,datos):
         datos["Country"] = datos["Country"].str.upper()
 
@@ -348,7 +350,7 @@ class Gdp:
         return data_clean
 
     # Coger las columnas que necesitamos
-    # Pasar los paises a mayúsculas y en inglés.
+    # Pasar los países a mayúsculas y en inglés.
     def data_clean_gdp(self, datos):
         datos["Country"] = datos["Country"].str.upper()
 
@@ -385,22 +387,21 @@ class Temperature:
         username = lines[0]
         password = lines[1]
         time.sleep(1)
-        # Accedemos al elemento de nombre usario
+        # Accedemos al elemento de nombre usuario
         elementID = browser.find_element(By.NAME, 'wpName')
         # Rellenamos el formulario
         elementID.send_keys(username)
         # Accedemos al elemento de la contraseña
         elementPW = browser.find_element(By.NAME, 'wpPassword')
-
         time.sleep(1)
         # Rellenamos el formulario
         elementPW.send_keys(password)
-        # Accedemos a la parte de busqueda y escribimos lo que queremos buscar
+        # Accedemos a la parte de búsqueda y escribimos lo que queremos buscar
         elementS = browser.find_element(By.NAME, 'search')
         time.sleep(1)
         elementS.send_keys('List of countries by average yearly temperature')
-        # Accedemos al boton de busqueda y clicamos en el
-        time.sleep(1)
+        # Accedemos al botón de búsqueda y clicamos en el
+        time.sleep(4)
         elementB = browser.find_element(By.ID, 'searchButton')
         elementB.click()
         url = browser.current_url
@@ -427,8 +428,6 @@ class Temperature:
 
         return data_clean
 
-        # Coger las columnas que necesitamos
-        # Pasar los paises a mayúsculas y en inglés.
 
     def data_clean_temperature(self, datos):
 
@@ -439,6 +438,7 @@ class Temperature:
 
 
 #################### UNIMOS LOS DATOS DE LOS CASOS DE COVID-19, LAS VACUNAS , GDP Y TEMPERATURA ####################
+
 class InfoCovid(Coronavirus, Vacunas, Gdp, Temperature):
 
     # constructor
