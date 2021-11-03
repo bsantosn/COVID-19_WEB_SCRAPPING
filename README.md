@@ -13,11 +13,12 @@ Objetivos:
 4. Obtener la temperatura de los diferentes países.
 
 Información de origen:
-
+       
 1. https://www.worldometers.info/coronavirus/
 2. https://datosmacro.expansion.com/otros/coronavirus-vacuna/
-3. https://datosmacro.expansion.com/pib
-4. https://en.wikipedia.org/w/index.php?title=Special:UserLogin
+3. https://datosmacro.expansion.com/pib  
+4. https://en.wikipedia.org/w/index.php?title=Special:UserLogin 
+
 Dataset final: covid_19.csv
 
 
