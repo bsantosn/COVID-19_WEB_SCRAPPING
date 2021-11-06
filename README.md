@@ -45,6 +45,3 @@ Dataset final: covid_19.csv
 Covid 19 Dataset, Cases by Country, Vaccination, GDP and Average Temperature
 https://doi.org/10.5281/zenodo.5635766
 
-## Licencia 📄
-
-* `CC0` Este proyecto está bajo la Licencia CC BY-SA 4.0 License  - mira el archivo [LICENSE.md](LICENSE.md) para más detalles
