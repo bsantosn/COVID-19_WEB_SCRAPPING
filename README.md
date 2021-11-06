@@ -1,4 +1,4 @@
-# COVID-19_WEB_SCRAPPING
+# COVID-19_WEB_SCRAPING
 
 ## Integrantes ✒️:
 
@@ -29,11 +29,13 @@ mira el archivo [requirements.txt](requirements.txt) para más detalles
 
 ## Uso del programa:
 
+```bash
+
 $ pip install -r requirements.txt
 
 $ python3 covid_19.py
 
-
+```
 
 ## Archivos resultantes:
 Dataset final: covid_19.csv
@@ -45,4 +47,4 @@ https://doi.org/10.5281/zenodo.5635766
 
 ## Licencia 📄
 
-Este proyecto está bajo la Licencia CC BY-SA 4.0 License  - mira el archivo [LICENSE.md](LICENSE.md) para más detalles
+* `CC0` Este proyecto está bajo la Licencia CC BY-SA 4.0 License  - mira el archivo [LICENSE.md](LICENSE.md) para más detalles
