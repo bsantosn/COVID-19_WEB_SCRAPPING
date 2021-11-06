@@ -19,8 +19,6 @@
 3. https://datosmacro.expansion.com/pib  
 4. https://en.wikipedia.org/w/index.php?title=Special:UserLogin 
 
-Dataset final: covid_19.csv
-
 
 ## Requisitos 📋
 
